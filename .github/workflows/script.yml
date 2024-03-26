@@ -15,8 +15,12 @@ jobs:
         with:
           dotnet-version: 8.0.x
       - name: Checkout do código
-        uses: actions/checkout@v2  
+        uses: actions/checkout@v2      
+       #dotnet test ./test/JornadaMilhas.Unit.Test
       - name: Execução do teste de unidade 
-        run: dotnet test ./test/JornadaMilhas.Unit.Test      
-      
+        run: dotnet test ./test/JornadaMilhas.Unit.Test
+       #dotnet publish ./src/JornadaMilhas.API
+      - name: Publicando a API
+        run: dotnet publish ./src/JornadaMilhas.API
+
       
