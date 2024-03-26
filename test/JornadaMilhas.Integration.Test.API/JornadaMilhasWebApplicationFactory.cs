@@ -11,9 +11,9 @@ using Testcontainers.MsSql;
 
 namespace JornadaMilhas.Integration.Test.API
 {
-    public class JornadaMilhasWebApplicationFactory : WebApplicationFactory<Program>
+    public class JornadaMilhasWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
     {
-        public JornadaMilhasContext Context { get; }
+        public JornadaMilhasContext Context { get; private set; }
 
         private IServiceScope scope;
 
@@ -21,12 +21,7 @@ namespace JornadaMilhas.Integration.Test.API
      .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
      .Build();
 
-
-        public JornadaMilhasWebApplicationFactory()
-        {
-            this.scope = Services.CreateScope();
-            Context = scope.ServiceProvider.GetRequiredService<JornadaMilhasContext>();
-        }
+             
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
@@ -56,5 +51,19 @@ namespace JornadaMilhas.Integration.Test.API
 
             return client;
         }
+
+        public async Task InitializeAsync()
+        {
+            await _mssqlContainer.StartAsync();
+            this.scope = Services.CreateScope();
+            Context = scope.ServiceProvider.GetRequiredService<JornadaMilhasContext>();
+
+        }
+
+        async Task IAsyncLifetime.DisposeAsync()
+        {
+            await _mssqlContainer.DisposeAsync();
+        }
+
     }
 }
