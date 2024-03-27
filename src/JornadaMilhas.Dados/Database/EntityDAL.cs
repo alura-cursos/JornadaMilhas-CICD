@@ -62,7 +62,6 @@ public class EntityDAL<T> where T : class
         {
             query = query.Where(condicao);
         }
-        return await query.OrderByDescending(x => EF.Property<int>(x, "Id"))
-                                       .FirstOrDefaultAsync();
+        return await query.OrderByDescending(x => EF.Property<int>(x, "Id")).FirstOrDefaultAsync();
     }
 }
