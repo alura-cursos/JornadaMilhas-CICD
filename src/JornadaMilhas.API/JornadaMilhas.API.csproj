@@ -32,5 +32,9 @@
     <InternalsVisibleTo Include="JornadaMilhas.Integration.Test.API" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include=".github\wokflows\primeiro-wokflow.yaml" />
+  </ItemGroup>
+
 
 </Project>
