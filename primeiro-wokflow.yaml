@@ -39,5 +39,5 @@ on:
         # Aqui definimos um novo passo na nossa pipeline que sera a publicacao da API
         - name: Publicando a API
           # Comando para publica a nossa API
-          # OBS: Note que sempre que usarmos o comando run, ele se refere ao comando rodado no nosso prompt dentro do sistema de maquina virtual criado no inicio do pipeline.
+          # OBS: Note que sempre que usarmos o comando run, ele se refere ao comando rodado no nosso prompt dentro do sistema de maquina virtual criado no inicio do pipeline
           run: dotnet publish ./src/JornadaMilhas.API
