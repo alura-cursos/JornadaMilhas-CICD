@@ -1,0 +1,43 @@
+﻿#dotnet test ./test/JornadaMilhas.Unit.Test
+#dotnet test ./test/JornadaMilhas.Integration.Test.API
+#dotnet publish ./src/JornadaMilhas.API
+
+# Aqui marcamos qual o nome do nosso workflow(fluxo de trabalho)
+name: Pipeline
+# Aqui informamos qual a condição para que o a nossa pipeline avance no codigo
+on:
+  # Aqui informamos que a condicao é quando houver um push pra branch main
+  push:
+    # Aqui somente informamos qual branche gerará o gatilho
+    branches: ["main"]
+  # Iniciamos a parametrizacao do nosso job com seus steps
+  jobs:
+    # Informamos o nome da nossa aplicacao que ser[a build
+    build:
+      # Informando em qual sistema operacional o sistema vai fazer os teste que no nosso caso é ubunto
+      name: Minha primeira pipeline
+      # Aqui informamos qual o sistema a versao do sistema que no nosso casos era definido como ultima versao(latest)
+      runs-on: ubuntu-latest
+      # Agora apos o sistema definido e a apos a intalacao do sistema o pipeline avançara para os steps ou estapas do teste
+      steps:
+        # Definido como primeiro step sera a instalacao do .NET no nosso sistema aqui adiconamos o nome para descricao da acao
+        - name: Setup .NET
+          # Aqui informamos a nossa actions do github para instalacao do .NET na nossa maquina virtual para testes
+          uses: actions/setup-dotnet@v2
+          # Aqui informamos os parametros para execucao do .NET e colocamos que a instalacao do mesmo sera a versao 8.0.x
+          with:
+            # Versao do .NET
+            dotnet-version: 8.0.x
+          # Aqui fazemos a checagem do nosso codigo antes de avancar no pipeline
+        - name: Checkout do código
+          # Utilizacao da action fornecida para checkout em .NET pelo github
+          uses: actions/checkout@v2
+          # Aqui iniciamos o nosso primeiro teste para rodar um comando no prompt do sistema operacional 
+        - name: Testes de unidade
+          # Note que o comando é o mesmo descrito no nosso arquivo.bat dentro da pasta "Itens de Solucao"
+          run: dotnet test ./test/JornadaMilhas.Unit.Test
+        # Aqui definimos um novo passo na nossa pipeline que sera a publicacao da API
+        - name: Publicando a API
+          # Comando para publica a nossa API
+          # OBS: Note que sempre que usarmos o comando run, ele se refere ao comando rodado no nosso prompt dentro do sistema de maquina virtual criado no inicio do pipeline
+          run: dotnet publish ./src/JornadaMilhas.API
